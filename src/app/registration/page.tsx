@@ -1,10 +1,10 @@
-import { AuthLayout, LoginForm } from "@/components/sys";
+import { AuthLayout, RegistrationForm } from "@/components/sys";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { LinksEnum } from "@/enums";
 
-export default async function Home() {
+export default async function Registration() {
 
     const session = await getServerSession(authOptions);
 
@@ -15,10 +15,10 @@ export default async function Home() {
 
     return (
         <AuthLayout
-            title={"Log in"}
-            description={"Enter your email and password below to login to your account"}
+            title={"Sign up"}
+            description={"Welcome to TODO app"}
         >
-            <LoginForm />
+            <RegistrationForm />
         </AuthLayout>
     )
 }
