@@ -17,14 +17,35 @@ interface Props {
 
 export const Todo = ({ todo }: Props) => {
 
-    const { updateTodo } = useContext(TodoContext);
+    const { updateTodo, deleteTodo } = useContext(TodoContext);
     const titleRef = useRef<HTMLInputElement>(null);
     const [isCompleted, setIsCompleted] = useState<boolean>(todo.isCompleted);
     const [title, setTitle] = useState<string>(todo.title);
 
+    const [isDisplayed, setIsDisplayed] = useState<boolean>(true);
+    const [isAnimOut, setIsAnimOut] = useState<boolean>(true);
+
     useEffect(() => {
         setTitle(todo.title);
     }, [todo]);
+
+    useEffect(() => {
+        const timer = 300;
+        if (!todo.deleting) {
+            const t = setTimeout(() => {
+                setIsAnimOut(false);
+            }, timer/2)
+            setIsDisplayed(true);
+            return () => clearTimeout(t);
+        }
+
+        setIsAnimOut(true);
+        let t = setTimeout(() => {
+            setIsDisplayed(false);
+        }, timer)
+
+        return () => window.clearTimeout(t);
+    }, [todo.deleting]);
 
     const onChange = (tmp: {title: string, isCompleted: boolean}) => {
         if (todo.loading) {
@@ -45,15 +66,23 @@ export const Todo = ({ todo }: Props) => {
             titleRef?.current?.focus()
             return;
         }
-        updateTodo({ ...todo, isCompleted: tmp.isCompleted, title: tmp.title }, true);
+        if (tmp.title === todo.title && tmp.isCompleted === todo.isCompleted)
+            return;
+        updateTodo(
+            { ...todo, isCompleted: tmp.isCompleted, title: tmp.title },
+            { fallback: todo }
+        );
     }
 
     const onDeleteClick = () => {
-        console.log(1)
+        deleteTodo(todo);
     }
 
     return (
-        <Card id={todo.id} className={`${todo.isCompleted || todo.loading ? "shadow-none opacity-60" : ""} relative`}>
+        <Card
+            id={todo.id}
+            className={`relative transition-opacity transition-transform duration-300 opacity-60 scale-0 ${isAnimOut ? "" : "scale-100 opacity-100"} ${!isDisplayed ? "hidden" : ""} ${todo.isCompleted || todo.loading ? "shadow-none opacity-60" : ""}`}
+        >
             <CardHeader>
                 <CardTitle>
                     {todo.loading && (

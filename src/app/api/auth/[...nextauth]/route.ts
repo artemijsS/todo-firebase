@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { LinksEnum } from "@/enums";
 import { auth } from "@/firebase/config";
 import { signInWithEmailAndPassword, UserCredential } from "@firebase/auth";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions: AuthOptions = {
     session: {
@@ -35,15 +36,23 @@ export const authOptions: AuthOptions = {
                 ...session,
                 user: {
                     ...session.user,
-                    ...token
+                    email: token.email,
+                    emailVerified: token.emailVerified,
+                    photoURL: token.photoURL,
+                    providerId: token.providerId,
+                    metadata: token.metadata
                 }
             }
         },
-        jwt: ({ token, user }) => {
+        jwt: ({ token, user }: { token: JWT, user: any }) => {
             if (user) {
                 return {
                     ...token,
-                    ...user
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    photoURL: user.photoURL,
+                    providerId: user.providerId,
+                    metadata: user.metadata
                 };
             }
             return token;

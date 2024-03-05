@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { LinksEnum } from "@/enums";
 
 export { registerUser, loginUser, getUser } from "./user";
-export { getTodos, createTodo } from "./todo";
+export { getTodos, createTodo, removeTodoById, updateTodoById } from "./todo";
 
 
 export const sendGet = async <T>({
@@ -24,6 +24,14 @@ export const sendData = async <T>({
     method?: "POST" | "PATCH" | "PUT",
 }): Promise<T | never> => {
     return apiBridge<T>({ url, method, data });
+}
+
+export const sendDelete = async <T>({
+    url,
+}: {
+    url: string,
+}): Promise<T | never> => {
+    return apiBridge<T>({ url, method: "DELETE" });
 }
 
 const apiBridge = async <T>({
