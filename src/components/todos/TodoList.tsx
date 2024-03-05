@@ -23,7 +23,7 @@ export const TodoList = ({ title, isCompleted, listId }: Props) => {
             <div className={"flex flex-col gap-2"}>
                 {todos.filter((todo: ITodoFull) => todo.isCompleted === isCompleted).map((todo: ITodoFull) => {
                     return (
-                        <React.Fragment key={todo.id}>
+                        <React.Fragment key={todo.key}>
                             <Todo todo={todo} />
                         </React.Fragment>
                     )

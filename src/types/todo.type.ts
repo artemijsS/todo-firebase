@@ -14,4 +14,5 @@ export type ITodoFull = ITodo & {
     loading?: boolean,
     deleting?: boolean,
     new?: boolean,
+    key?: string,
 }

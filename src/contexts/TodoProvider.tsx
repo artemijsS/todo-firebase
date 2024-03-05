@@ -29,7 +29,7 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
 
     useEffect(() => {
         getTodos().then((res: { data: ITodo[] }) => {
-            setTodos(res.data);
+            setTodos(res.data.map(t => ({ ...t, key: t.id })));
         }).catch(e => {
             toast({
                 variant: "destructive",
@@ -42,13 +42,13 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
     const createNewTodo = (dto: ITodoDto) => {
         const randomId = generateRandomId(8);
         const timeNow = String(new Date().getTime());
-        const dtoFull = {...dto, owner: "me", isCompleted: false, createdAt: timeNow, updatedAt: timeNow, id: randomId, loading: true, new: true }
+        const dtoFull = {...dto, owner: "me", isCompleted: false, createdAt: timeNow, updatedAt: timeNow, id: randomId, loading: true, new: true, key: randomId }
         setTodos([
             dtoFull,
             ...todos
         ]);
         createTodo(dto).then((res: ITodoFull) => {
-            updateTodo(res, { id: randomId });
+            updateTodo({ ...res, key: randomId }, { id: randomId });
         }).catch((e) => {
             deleteTodo(dtoFull);
             toast({
