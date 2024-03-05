@@ -4,10 +4,10 @@ import "../styles/globals.css";
 import React from "react";
 import AuthProvider from "@/contexts/SessionProvider";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { ThemeSwitcher } from "@/components/sys";
 import { Toaster } from "@/components/ui/toaster";
+import { authOptions } from "@/lib/authOptions";
 
 const inter = Inter({ subsets: ["latin"] });
 

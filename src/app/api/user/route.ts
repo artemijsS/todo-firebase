@@ -1,9 +1,6 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getDocs, query, where } from "@firebase/firestore";
-import { usersCol } from "@/firebase/config";
-import { IUser } from "@/types";
 import { getUserByEmail } from "@/lib/api/db.utils";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET() {
     const session = await getServerSession(authOptions);

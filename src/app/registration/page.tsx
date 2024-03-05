@@ -1,8 +1,8 @@
 import { AuthLayout, RegistrationForm } from "@/components/sys";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { LinksEnum } from "@/enums";
+import { authOptions } from "@/lib/authOptions";
 
 export default async function Registration() {
 

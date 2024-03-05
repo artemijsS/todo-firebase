@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getUserByEmail } from "@/lib/api/db.utils";
 import { deleteDoc, doc, getDoc, updateDoc } from "@firebase/firestore";
 import { todosCol } from "@/firebase/config";
 import { ITodo } from "@/types";
+import { authOptions } from "@/lib/authOptions";
 
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
