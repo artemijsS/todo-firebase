@@ -1,5 +1,18 @@
-export { registerUser, loginUser } from "./user";
+import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { LinksEnum } from "@/enums";
 
+export { registerUser, loginUser, getUser } from "./user";
+export { getTodos, createTodo } from "./todo";
+
+
+export const sendGet = async <T>({
+  url,
+}: {
+    url: string,
+}): Promise<T | never> => {
+    return apiBridge<T>({ url, method: "GET" });
+}
 
 export const sendData = async <T>({
   url,
@@ -36,12 +49,20 @@ const apiBridge = async <T>({
     init.cache = cache;
     init.method = method;
 
-    const res = await fetch(url, {
+    const res = await fetch((typeof window === "undefined" ? process.env.NEXTAUTH_URL : "") + url, {
         ...init,
         headers: {
             ...init.headers,
         }
     });
+
+    if (res.status === 401) {
+        if (typeof window !== "undefined") {
+            signOut();
+        } else {
+            redirect(LinksEnum.login);
+        }
+    }
 
     let body;
 

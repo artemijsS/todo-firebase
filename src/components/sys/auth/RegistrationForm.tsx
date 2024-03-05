@@ -34,8 +34,10 @@ export const RegistrationForm = ({ className, ...props }: UserAuthFormProps) => 
         }
         setIsLoading(true);
 
-        registerUser({ email: form.email, password: form.password }).then((res) => {
-            signIn("credentials", { email: form.email, password: form.password, redirect: true, callbackUrl: "/todos" })
+        registerUser({ email: form.email, password: form.password }).then(() => {
+            setTimeout(() => {
+                signIn("credentials", { email: form.email, password: form.password, redirect: true, callbackUrl: "/todos" })
+            }, 100)
         }).catch((e) => {
             setError(getErrorMessage(e, "Registration error"))
         }).finally(() => {

@@ -5,6 +5,9 @@ import React from "react";
 import AuthProvider from "@/contexts/SessionProvider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { ThemeProvider } from "@/contexts/ThemeProvider";
+import { ThemeSwitcher } from "@/components/sys";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +23,18 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     return (
         <html lang="en">
             <AuthProvider session={session}>
-                <body className={inter.className}>{children}</body>
+                <body className={`${inter.className}`}>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <ThemeSwitcher />
+                        {children}
+                        <Toaster />
+                    </ThemeProvider>
+                </body>
             </AuthProvider>
         </html>
     );

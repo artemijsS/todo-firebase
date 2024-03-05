@@ -1,6 +1,11 @@
+import { CreateNewTodo, TodoLists } from "@/components/todos";
+
 export default async function Todos() {
 
     return (
-        123
+        <>
+            <CreateNewTodo />
+            <TodoLists />
+        </>
     )
 }
